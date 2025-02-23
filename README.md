@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# CI Midterm Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Repository Structure
+```
+ci_midterm/
+├── .github/
+│   └── workflows/           # CI pipeline configuration
+├── public/                  # Static public assets
+├── src/                     # React source code
+├── .dockerignore            # Files to ignore in Docker builds
+├── .gitignore               # Files to ignore in Git
+├── Dockerfile               # Docker image configuration
+├── package.json             # NPM package configuration
+├── package-lock.json        # NPM package lockfile
+└── README.txt               # Project documentation
+```
 
-## Available Scripts
+## Prerequisites
+- Node.js (version 14 or higher)
+- NPM (version 6 or higher)
+- Docker (if using Docker)
+- Git
 
-In the project directory, you can run:
+## Installation
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/nidhip24/ci_midterm.git
+   cd ci_midterm
+   ```
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
 
-### `npm start`
+## Running the Application
+### Using NPM
+```sh
+# Start the development server
+npm start
+```
+This will run the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Using Docker
+1. **Build the Docker image:**
+   ```sh
+   docker build -t todo-app:latest .
+   ```
+2. **Run the Docker container:**
+   ```sh
+   docker run -p 8080:80 todo-app:latest
+   ```
+This will start the application inside a Docker container, accessible at [http://localhost:8080](http://localhost:8080).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Testing the Application
+```sh
+# Run tests
+npm test
+```
 
-### `npm test`
+## Building for Production
+```sh
+# Create a production build
+npm run build
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Continuous Integration Pipeline
+The project uses GitHub Actions for continuous integration. The workflow is defined in `.github/workflows/ci.yml`.
 
-### `npm run build`
+### Testing the CI Pipeline
+1. **Trigger the workflow:**
+   - Push a commit to the repository.
+   - Create a pull request.
+2. **Monitor the workflow:**
+   - Go to the "Actions" tab in your GitHub repository.
+   - Select the latest workflow run to view details.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Docker Image from Registry
+```sh
+# Pull the Docker image
+docker pull nidhip24/todo-app:latest
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Run the Docker container
+docker run -p 8080:80 nidhip24/todo-app:latest
+```
