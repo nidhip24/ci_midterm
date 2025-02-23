@@ -1,58 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TodoForm from './TodoForm';
 
-function TodoList({ todos, onUpdate, onDelete }) {
-  const [editId, setEditId] = useState(null);
-
-  const handleStatusChange = (todo) => {
-    onUpdate(todo.id, {
-      ...todo,
-      status: todo.status === 'in-progress' ? 'done' : 'in-progress'
-    });
-  };
-
-  const handleEdit = (todo) => {
-    setEditId(todo.id);
-  };
-
-  const handleUpdate = (updatedTodo) => {
-    onUpdate(editId, updatedTodo);
-    setEditId(null);
-  };
-
+function TodoList({ todos, onUpdate, onDelete, onToggle, onStartEdit, editingId, editingText, onEditChange }) {
   return (
     <div className="todo-list">
       {todos.map(todo => (
-        <div key={todo.id} className={`todo-item ${todo.status}`}>
-          {editId === todo.id ? (
-            <TodoForm
-              onSubmit={handleUpdate}
-              initialValue={todo.title}
-              isEdit={true}
-            />
+        <div key={todo.id} className={`todo-item ${todo.done ? 'done' : ''}`}>
+          {editingId === todo.id ? (
+            <>
+              <input
+                type="text"
+                value={editingText}
+                onChange={(e) => onEditChange(e.target.value)}
+              />
+              <button onClick={onUpdate}>Update</button>
+            </>
           ) : (
             <>
-              <span className="todo-title">{todo.title}</span>
-              <div className="todo-actions">
-                <button 
-                  onClick={() => handleStatusChange(todo)}
-                  className="status-button"
-                >
-                  {todo.status === 'in-progress' ? '✓' : '↻'}
-                </button>
-                <button 
-                  onClick={() => handleEdit(todo)}
-                  className="edit-button"
-                >
-                  Edit
-                </button>
-                <button 
-                  onClick={() => onDelete(todo.id)}
-                  className="delete-button"
-                >
-                  Delete
-                </button>
-              </div>
+              <span>{todo.text}</span>
+              <button 
+                onClick={() => onToggle(todo.id)}
+                data-testid={`toggle-${todo.id}`}
+              >
+                ✓
+              </button>
+              <button 
+                onClick={() => onStartEdit(todo)}
+                data-testid={`edit-${todo.id}`}
+              >
+                Edit
+              </button>
+              <button 
+                onClick={() => onDelete(todo.id)}
+                data-testid={`delete-${todo.id}`}
+              >
+                Delete
+              </button>
             </>
           )}
         </div>

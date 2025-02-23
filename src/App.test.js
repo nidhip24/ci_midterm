@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import App from './App';
 
 test('adds a new todo', () => {
@@ -17,13 +18,15 @@ test('marks todo as done', () => {
   const input = screen.getByPlaceholderText('Add a new todo');
   const addButton = screen.getByText('Add');
   
-  fireEvent.change(input, { target: { value: 'Test todo' } });
+  const uniqueTodoText = 'Toggle Test Todo ' + Date.now();
+  fireEvent.change(input, { target: { value: uniqueTodoText } });
   fireEvent.click(addButton);
   
-  const statusButton = screen.getByText('✓');
-  fireEvent.click(statusButton);
+  const todoElement = screen.getByText(uniqueTodoText);
+  const todoItem = todoElement.closest('.todo-item');
+  const toggleButton = todoItem.querySelector(`[data-testid^="toggle-"]`);
+  fireEvent.click(toggleButton);
   
-  const todoItem = screen.getByText('Test todo').closest('.todo-item');
   expect(todoItem).toHaveClass('done');
 });
 
@@ -32,13 +35,16 @@ test('deletes a todo', () => {
   const input = screen.getByPlaceholderText('Add a new todo');
   const addButton = screen.getByText('Add');
   
-  fireEvent.change(input, { target: { value: 'Test todo' } });
+  const uniqueTodoText = 'Delete Test Todo ' + Date.now();
+  fireEvent.change(input, { target: { value: uniqueTodoText } });
   fireEvent.click(addButton);
   
-  const deleteButton = screen.getByText('Delete');
+  const todoElement = screen.getByText(uniqueTodoText);
+  const todoItem = todoElement.closest('.todo-item');
+  const deleteButton = todoItem.querySelector('button:last-child');
   fireEvent.click(deleteButton);
   
-  expect(screen.queryByText('Test todo')).not.toBeInTheDocument();
+  expect(screen.queryByText(uniqueTodoText)).not.toBeInTheDocument();
 });
 
 test('edits a todo', () => {
@@ -46,13 +52,16 @@ test('edits a todo', () => {
   const input = screen.getByPlaceholderText('Add a new todo');
   const addButton = screen.getByText('Add');
   
-  fireEvent.change(input, { target: { value: 'Test todo' } });
+  const uniqueTodoText = 'Edit Test Todo ' + Date.now();
+  fireEvent.change(input, { target: { value: uniqueTodoText } });
   fireEvent.click(addButton);
   
-  const editButton = screen.getByText('Edit');
+  const todoElement = screen.getByText(uniqueTodoText);
+  const todoItem = todoElement.closest('.todo-item');
+  const editButton = todoItem.querySelector(`[data-testid^="edit-"]`);
   fireEvent.click(editButton);
   
-  const editInput = screen.getByDisplayValue('Test todo');
+  const editInput = screen.getByDisplayValue(uniqueTodoText);
   fireEvent.change(editInput, { target: { value: 'Updated todo' } });
   
   const updateButton = screen.getByText('Update');
